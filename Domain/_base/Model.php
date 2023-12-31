@@ -2,32 +2,28 @@
 
 namespace Domain\_base;
 
-use System\DBHelper;
-use System\SelectBuilder;
+use System\Database\Query;
 
 abstract class Model {
-
-  protected DBHelper $db;
-  protected SelectBuilder $query;
-
-  protected string $key = "id";
+  protected Query $query;
   protected string $table;
+  protected string $key;
 
   public function __construct() {
-    $this->query = new SelectBuilder($this->table);
-    $this->db = DBHelper::getInstance();
+    $this->query = new Query($this->table, $this->key);
   }
 
   public function getAll(){
-    return $this->db->fetchAll(
-      $this->query->getSQL()
-    );
+    $sql = $this->query->select()->getSQL();
+    return $this->query->fetchAll($sql);
   }
 
   public function getById(int $id){
-    return $this->db->fetch(
-      $this->query->where($this->key, "=", ":{$this->key}")->getSQL(),
-      [$this->key => $id]
-    );
+    $sql = $this->query
+      ->select()
+      ->where($this->key, "=", $id)
+      ->getSQL();
+
+    return $this->query->fetch($sql);
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace System;
+namespace System\Database;
 
 class SelectBuilder {
 	protected string $table;

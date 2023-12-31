@@ -2,9 +2,6 @@
 
 namespace Domain\Transaction;
 
-use System\DBHelper;
-use System\SelectBuilder;
-
 use Domain\_base\Model as BaseModel;
 
 class Model extends BaseModel {
@@ -12,16 +9,17 @@ class Model extends BaseModel {
   protected string $key = "id";
 
   public function getAll(){
-    return $this->db->fetchAll(
-      $this->query
-        ->join("categories", "id", "id")
-        ->join("budgets", "id", "id")
-        ->fields([
+    $sql = $this->query
+      ->select([
           "transactions.id AS id", 
           "transactions.total AS total", 
           "categories.name AS category", 
           "budgets.name AS budget"
-        ])->getSQL(),
-    );
+        ])
+      ->join("categories", "id", "id")
+      ->join("budgets", "id", "id")
+      ->getSQL();
+
+    return $this->query->fetchAll($sql);
   }
 }

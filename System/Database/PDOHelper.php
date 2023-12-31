@@ -1,11 +1,11 @@
 <?php
 
-namespace System;
+namespace System\Database;
 
 use PDO;
 
-class DBHelper {
-	public static DBHelper $instance;
+class PDOHelper {
+	public static PDOHelper $instance;
 	public static PDO $pdo;
 
 	public function __construct(){
@@ -17,7 +17,7 @@ class DBHelper {
 
   public static function getInstance(): self {
     if(!isset(self::$instance)) {
-      self::$instance = new DBHelper();
+      self::$instance = new PDOHelper();
     }
 
     return self::$instance;

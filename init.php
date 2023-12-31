@@ -24,16 +24,10 @@ function autoloader($className){
   $path = str_replace('\\', '/', $className) . '.php';
 
   if(!file_exists($path)){
-    $path = '../' . str_replace('\\', '/', $className) . '.php';
-  }
-
-  if(!file_exists($path)){
     print_r('Autoload fuck');
   }
 
-
   include_once($path);
-
 }
 
 spl_autoload_register('autoloader');
