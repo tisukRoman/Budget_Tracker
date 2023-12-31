@@ -26,7 +26,7 @@ class DBHelper {
 	public function fetch(string $query, array $params = []) : ?array{
 		$query = self::$pdo->prepare($query);
 		$query->execute($params);
-		return $query->fetchAll();
+		return $query->fetch();
 	}
 
 	public function fetchAll(string $query, array $params = []) : ?array{

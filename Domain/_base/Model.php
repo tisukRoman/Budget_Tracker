@@ -26,7 +26,7 @@ abstract class Model {
 
   public function getById(int $id){
     return $this->db->fetch(
-      $this->query->where($this->key, ":id")->getSQL(),
+      $this->query->where($this->key, "=", ":{$this->key}")->getSQL(),
       [$this->key => $id]
     );
   }

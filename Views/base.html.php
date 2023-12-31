@@ -20,10 +20,6 @@
 
         <main class="home">
 
-        <h1 class="title"><?php echo $title ?></h1>
-
-        <?php echo $content ?>
-
         <nav class="menu">
           <ul class="menu__list">
             <li class="menu__item">
@@ -43,6 +39,10 @@
             </li>
           </ul>
         </nav>
+
+        <h1 class="title"><?php echo $title ?></h1>
+
+        <?php echo $content ?>
 
       </main>
 

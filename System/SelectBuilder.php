@@ -3,23 +3,27 @@
 namespace System;
 
 class SelectBuilder {
-	public string $table;
-  public string $sql;
+	protected string $table;
+  protected string $sql;
 
-  public string $whereSQL = "";
-  public string $limitSQL = "";
-  public string $orderSQL = "";
+  protected array $fields = ["*"];
+
+  protected string $joinSQL = "";
+  protected string $whereSQL = "";
+  protected string $orderSQL = "";
+  protected string $limitSQL = "";
 
 	public function __construct(string $table){
 		$this->table = $table;
-    $this->sql = "SELECT * FROM `{$table}` ";
+    $this->sql = "SELECT * FROM `{$this->table}`";
 	}
 
   public function getSQL(): string {
-    return $this->sql . $this->whereSQL . $this->orderSQL . $this->limitSQL;
+    return "SELECT {$this->getFieldsSQL()} FROM {$this->table} 
+      {$this->joinSQL} {$this->whereSQL} {$this->orderSQL} {$this->limitSQL}";
   }
 
-  public function where(string $field, string $operator, string $value): ISelectBuilder {
+  public function where(string $field, string $operator, string $value): SelectBuilder {
     if(!isset($field) || !isset($operator)){
       throw new Exception("You must specify all the variables");
     }
@@ -31,7 +35,7 @@ class SelectBuilder {
     return $this;
   }
 
-  public function orderBy(string $field, string $order = "ASC"): ISelectBuilder {
+  public function orderBy(string $field, string $order = "ASC"): SelectBuilder {
     empty($this->orderSQL) 
       ? $this->orderSQL = " ORDER BY {$field} {$order} "
       : $this->orderSQL .= ", {$field} {$order} ";
@@ -39,7 +43,7 @@ class SelectBuilder {
     return $this;
   }
 
-  public function limit(int $limit = 10, int $offset = 0): ISelectBuilder {
+  public function limit(int $limit = 10, int $offset = 0): SelectBuilder {
     if(!empty($this->limitSQL)){
       throw new Exception("You can use only one limit statement in SQL");
     }
@@ -49,7 +53,25 @@ class SelectBuilder {
     return $this;
   }
 
+  public function join(string $table, string $foreignKey, string $primaryKey): SelectBuilder {
+    $this->joinSQL .= " JOIN {$table} ON {$this->table}.{$foreignKey} = {$table}.{$primaryKey} ";
+
+    return $this;
+  }
+
+  public function fields(array $fields) {
+    if(isset($fields)){
+      $this->fields = $fields;
+    }
+
+    return $this;
+  }
+
 	public function __toString(){
     return $this->getSQL();
 	}
+
+  protected function getFieldsSQL(){
+    return implode(", ", $this->fields);
+  }
 }

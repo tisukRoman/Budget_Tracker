@@ -14,8 +14,8 @@
 
         <tr>
           <td><?php echo $transaction['total'] ?></td>
-          <td><?php echo $transaction['categoryName'] ?></td>
-          <td><?php echo $transaction['budgetName'] ?></td>
+          <td><?php echo $transaction['category'] ?></td>
+          <td><?php echo $transaction['budget'] ?></td>
         </tr>
 
       <?php endforeach; ?>

@@ -16,6 +16,7 @@ body {
   background-color: var(--color-dark);
   color: var(--color-ligth);
   font-family: system-ui;
+  font-size: 1.2rem;
 }
 
 .container {
@@ -65,7 +66,7 @@ button {
 /* menu */
 
 .menu__list {
-  margin-top: 6rem;
+  margin-top: 4rem;
   list-style: none;
   display: flex;
   gap: 2rem;
@@ -74,4 +75,24 @@ button {
 .menu__item a {
   display: inline-block;
   color: var(--color-light);
+}
+
+/* table */
+
+table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+thead tr {
+  text-align: left;
+}
+
+th,
+td {
+  padding: 12px 15px;
 }

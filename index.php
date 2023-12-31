@@ -1,5 +1,6 @@
 <?php
 
+use Domain\User\Controller as UserController;
 use Domain\Category\Controller as CategoryController;
 use Domain\Budget\Controller as BudgetController;
 use Domain\Transaction\Controller as TransactionController;
@@ -12,12 +13,17 @@ try {
   $path = explode('/', $uri)[2];
 
 
+  $user = new UserController();
   $category = new CategoryController();
   $budget = new BudgetController();
   $transaction = new TransactionController();
 
 
-  if($path === 'categories')
+  if($path === '')
+  {
+    echo $user->index();
+  }
+  elseif($path === 'categories')
   {
     echo $category->index();
   }
