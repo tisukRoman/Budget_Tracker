@@ -2,7 +2,7 @@
 
     <thead>
       <tr>
-        <th>Назва категорії:</th>
+        <th>Назва категорії</th>
       </tr>
     </thead>
 
@@ -17,5 +17,12 @@
       <?php endforeach; ?>
 
     </tbody>
+
+    <form method="POST" action="categories/add">
+      <div class="form">
+        <input class="input" name="name" placeholder="Назва категорії..." type="text" />
+        <button type="submit">Додати Категорію</button>
+      </div>
+    </form>
 
 </table>

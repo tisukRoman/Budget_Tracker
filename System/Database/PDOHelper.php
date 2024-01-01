@@ -34,4 +34,9 @@ class PDOHelper {
 		$query->execute($params);
 		return $query->fetchAll();
 	}
+
+  public function execute(string $query, array $params = []): bool {
+		$query = self::$pdo->prepare($query);
+		return $query->execute($params);
+  }
 }

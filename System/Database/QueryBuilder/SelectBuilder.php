@@ -1,11 +1,8 @@
 <?php
 
-namespace System\Database;
+namespace System\Database\QueryBuilder;
 
-class SelectBuilder {
-	protected string $table;
-  protected string $sql;
-
+class SelectBuilder extends QueryBuilder {
   protected array $fields = ["*"];
 
   protected string $joinSQL = "";
@@ -13,14 +10,16 @@ class SelectBuilder {
   protected string $orderSQL = "";
   protected string $limitSQL = "";
 
-	public function __construct(string $table){
-		$this->table = $table;
-    $this->sql = "SELECT * FROM `{$this->table}`";
-	}
-
   public function getSQL(): string {
-    return "SELECT {$this->getFieldsSQL()} FROM {$this->table} 
-      {$this->joinSQL} {$this->whereSQL} {$this->orderSQL} {$this->limitSQL}";
+    $fields = implode(", ", $this->fields);
+
+    return "
+      SELECT {$fields} FROM {$this->table} 
+      {$this->joinSQL} 
+      {$this->whereSQL} 
+      {$this->orderSQL} 
+      {$this->limitSQL}
+    ";
   }
 
   public function where(string $field, string $operator, string $value): SelectBuilder {
@@ -57,21 +56,5 @@ class SelectBuilder {
     $this->joinSQL .= " JOIN {$table} ON {$this->table}.{$foreignKey} = {$table}.{$primaryKey} ";
 
     return $this;
-  }
-
-  public function fields(array $fields) {
-    if(isset($fields)){
-      $this->fields = $fields;
-    }
-
-    return $this;
-  }
-
-	public function __toString(){
-    return $this->getSQL();
-	}
-
-  protected function getFieldsSQL(){
-    return implode(", ", $this->fields);
   }
 }

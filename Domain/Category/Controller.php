@@ -20,4 +20,16 @@ class Controller extends BaseController {
 
     return parent::render();
   }
+
+  public function addCategory() {
+    $params = [
+      'name' => (string) $_POST['name'],
+      'userId' => 1
+    ];
+
+    $categoryId = $this->model->add($params);
+
+    header("Location: " . BASE_URL . "/categories");
+    exit();
+  }
 }

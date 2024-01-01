@@ -10,31 +10,38 @@ try {
   include_once('init.php');
 
   $uri = $_SERVER['REQUEST_URI'];
-  $path = explode('/', $uri)[2];
 
+  $path = explode("/", $uri);
+  $path = array_slice($path, 2);
 
   $user = new UserController();
   $category = new CategoryController();
   $budget = new BudgetController();
   $transaction = new TransactionController();
+  
 
+  if($path[0] == 'categories' and $path[1] == "add")
+  {
+    echo $category->addCategory();
+  }
 
-  if($path === '')
+  elseif($path[0] === '')
   {
     echo $user->index();
   }
-  elseif($path === 'categories')
+  elseif($path[0] === 'categories')
   {
     echo $category->index();
   }
-  elseif($path == 'budgets')
+  elseif($path[0] == 'budgets')
   {
     echo $budget->index();
   }
-  elseif($path == 'transactions')
+  elseif($path[0] == 'transactions')
   {
     echo $transaction->index();
   }
+
   else 
   {
     echo "404";

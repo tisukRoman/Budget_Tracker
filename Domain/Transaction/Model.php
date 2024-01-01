@@ -8,7 +8,7 @@ class Model extends BaseModel {
   protected string $table = "transactions";
   protected string $key = "id";
 
-  public function getAll(){
+  public function getAll(): array {
     $sql = $this->query
       ->select([
           "transactions.id AS id", 
