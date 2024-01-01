@@ -15,27 +15,31 @@ try {
   $budget = new Budget();
   $category = new Category();
   $transaction = new Transaction();
+
   
   $router = new Router();
 
-  $router->addRoute('GET', '/', $user, 'index');
-  $router->addRoute('GET', '/budgets', $budget, 'index');
-  $router->addRoute('GET', '/categories', $category, 'index');
-  $router->addRoute('GET', '/transactions', $transaction, 'index');
 
-  $router->addRoute('POST', '/categories/add', $category, 'addCategory');
+  $router->get('/', $user, 'index');
+
+  $router->get('/budgets', $budget, 'index');
+
+  $router->get('/categories', $category, 'index');
+
+  $router->get('/transactions', $transaction, 'index');
+
+  $router->post('/categories/add', $category, 'addCategory');
+
 
   $method = $_SERVER['REQUEST_METHOD'];
-
   $uri = str_replace(BASE_URL, "", $_SERVER['REQUEST_URI']);
 
-  $activeRoute = $router->match($method, $uri);
+  $activeRoute = $router->resolvePath($method, $uri);
 
   if($activeRoute){
 
     $controller = $activeRoute['controller'];
     $controllerMethod = $activeRoute['callback'];
-
     echo call_user_func([$controller, $controllerMethod]);
 
   } else {
