@@ -2,6 +2,7 @@
 
 namespace Domain\_base;
 
+use Exception;
 use System\Template;
 
 class Controller {
@@ -14,5 +15,9 @@ class Controller {
       'title' => $this->title,
       'content' => $this->content
     ]);
+  }
+
+  public function __call(string $name, array $args){
+    throw new Exception('Undefined Action');
   }
 }

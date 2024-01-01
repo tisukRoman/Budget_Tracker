@@ -1,52 +1,48 @@
 <?php
 
-use Domain\User\Controller as UserController;
-use Domain\Category\Controller as CategoryController;
-use Domain\Budget\Controller as BudgetController;
-use Domain\Transaction\Controller as TransactionController;
+use System\Router;
+
+use Domain\User\Controller as User;
+use Domain\Budget\Controller as Budget;
+use Domain\Category\Controller as Category;
+use Domain\Transaction\Controller as Transaction;
 
 try {
 
   include_once('init.php');
 
-  $uri = $_SERVER['REQUEST_URI'];
-
-  $path = explode("/", $uri);
-  $path = array_slice($path, 2);
-
-  $user = new UserController();
-  $category = new CategoryController();
-  $budget = new BudgetController();
-  $transaction = new TransactionController();
+  $user = new User();
+  $budget = new Budget();
+  $category = new Category();
+  $transaction = new Transaction();
   
+  $router = new Router();
 
-  if($path[0] == 'categories' and $path[1] == "add")
-  {
-    echo $category->addCategory();
-  }
+  $router->addRoute('GET', '/', $user, 'index');
+  $router->addRoute('GET', '/budgets', $budget, 'index');
+  $router->addRoute('GET', '/categories', $category, 'index');
+  $router->addRoute('GET', '/transactions', $transaction, 'index');
 
-  elseif($path[0] === '')
-  {
-    echo $user->index();
-  }
-  elseif($path[0] === 'categories')
-  {
-    echo $category->index();
-  }
-  elseif($path[0] == 'budgets')
-  {
-    echo $budget->index();
-  }
-  elseif($path[0] == 'transactions')
-  {
-    echo $transaction->index();
-  }
+  $router->addRoute('POST', '/categories/add', $category, 'addCategory');
 
-  else 
-  {
-    echo "404";
-  }
+  $method = $_SERVER['REQUEST_METHOD'];
 
+  $uri = str_replace(BASE_URL, "", $_SERVER['REQUEST_URI']);
+
+  $activeRoute = $router->match($method, $uri);
+
+  if($activeRoute){
+
+    $controller = $activeRoute['controller'];
+    $controllerMethod = $activeRoute['callback'];
+
+    echo call_user_func([$controller, $controllerMethod]);
+
+  } else {
+
+    echo "404 Not Found";
+
+  }
 }
 
 catch(Throwable $error){
